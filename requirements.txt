@@ -1,0 +1,6 @@
+numpy
+scipy
+ipython
+matplotlib
+cython
+SimPEG
