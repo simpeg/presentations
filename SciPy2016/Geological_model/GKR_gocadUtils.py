@@ -201,12 +201,6 @@ def makeModelFile():
                 [work_dir+'VK.ts',True,True]
     ]
 
-'XVK.vtp':
-'PK1.vtp':
-'PK2.vtp':
-'PK3.vtp':
-'HK1.vtp':
- 'VK.vtp':
     # Background density
     bkgr = 1e-4
     airc = 1e-8

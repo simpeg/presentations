@@ -26,7 +26,7 @@ def getDataInfo(MTdata):
 # Load the data
 drecAll = np.load('../../MTdataStArr_nsmesh_0.npy')
 # Select larger frequency band for the MT data
-indMTFreq = np.sum([drecAll['freq'] == val for val in  np.unique(drecAll['freq'])[10::] ],axis=0,dtype=bool)
+indMTFreq = np.sum([drecAll['freq'] == val for val in  np.unique(drecAll['freq'])[10::2] ],axis=0,dtype=bool)
 mtRecArr = drecAll[indMTFreq][['freq','x','y','z','zxy','zyx']]
 dUse = MT.Data.fromRecArray(mtRecArr)
 
@@ -79,7 +79,7 @@ sigma1d = mesh.r(sigmaBG,'CC','CC','M')[0,0,:]
 m_0 = np.log(sigmaBG[active])
 ## Setup the problem object
 problem = MT.Problem3D.eForm_ps(mesh,mapping=mappingExpAct,sigmaPrimary = sigma1d)
-problem.verbose = False
+problem.verbose = True
 # Change the solver
 problem.Solver = MumpsSolver
 problem.pair(survey)
