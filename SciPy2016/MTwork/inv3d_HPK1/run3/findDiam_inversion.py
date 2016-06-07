@@ -4,7 +4,7 @@ sys.path.append('/tera_raid/gudni/gitCodes/simpeg')
 sys.path.append('/tera_raid/gudni')
 from pymatsolver import MumpsSolver
 import SimPEG as simpeg
-from SimPEG import MT
+from SimPEG import NSEM
 from numpy.lib import recfunctions as rFunc
 
 # Function to get data and data info
@@ -25,8 +25,8 @@ def getDataInfo(MTdata):
 drecAll = np.load('../../MTdataStArr_nsmesh_HKPK1.npy')
 # Select larger frequency band for the MT data
 indMTFreq = np.sum( [drecAll['freq'] == val for val in  np.unique(drecAll['freq'])[5::]] ,axis=0,dtype=bool)
-mtRecArr = drecAll[indMTFreq][['freq','x','y','z','zxy','zyx']]
-dUse = MT.Data.fromRecArray(mtRecArr)
+mtRecArr = drecAll[indMTFreq][['freq','x','y','z','zxx','zxy','zyx','zyy']]
+dUse = NSEM.Data.fromRecArray(mtRecArr)
 
 # Extract to survey
 survey = dUse.survey
@@ -76,7 +76,7 @@ sigma1d = mesh.r(sigmaBG,'CC','CC','M')[0,0,:]
 # Make teh starting model
 m_0 = np.log(sigmaBG[active])
 ## Setup the problem object
-problem = MT.Problem3D.eForm_ps(mesh,mapping=mappingExpAct,sigmaPrimary = sigma1d)
+problem = NSEM.Problem3D_ePrimSec(mesh,mapping=mappingExpAct,sigmaPrimary = sigma1d)
 problem.verbose = True
 # Change the solver
 problem.Solver = MumpsSolver
@@ -98,8 +98,8 @@ opt.remember('xc')
 dmis = simpeg.DataMisfit.l2_DataMisfit(survey)
 dmis.Wd = Wd
 # Regularization
-regMap = simpeg.Maps.InjectActiveCellsTopo(mesh,active) # valInactive=
-reg = simpeg.Regularization.Tikhonov(mesh,mapping=regMap)#,indActive=np.where(active))
+# regMap = simpeg.Maps.InjectActiveCellsTopo(mesh,active) # valInactive=
+reg = simpeg.Regularization.Tikhonov(mesh,indActive=active)
 reg.mref = m_0
 reg.alpha_s = 1e-14
 reg.alpha_x = 1.

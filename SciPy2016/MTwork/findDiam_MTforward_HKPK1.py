@@ -5,7 +5,7 @@ sys.path.append('/tera_raid/gudni/gitCodes/simpeg')
 sys.path.append('/tera_raid/gudni/gitCodes/simpegem')
 import SimPEG as simpeg
 import SimPEG
-from SimPEG import MT
+from SimPEG import NSEM
 
 # Load the solver
 sys.path.append('/tera_raid/gudni')
@@ -23,21 +23,21 @@ bgsigma[sigma > 9.999e-7] = 0.01
 # for loc in locs:
 #     # NOTE: loc has to be a (1,3) np.ndarray otherwise errors accure
 #     for rxType in ['zxxr','zxxi','zxyr','zxyi','zyxr','zyxi','zyyr','zyyi']:
-#         rxList.append(simpegmt.SurveyMT.RxMT(simpeg.mkvc(loc,2).T,rxType))
+#         rxList.append(simpegNSEM.SurveyNSEM.RxMT(simpeg.mkvc(loc,2).T,rxType))
 # Make a receiver list
 rxList = []
 for rxType in ['zxxr','zxxi','zxyr','zxyi','zyxr','zyxi','zyyr','zyyi','tzxr','tzxi','tzyr','tzyi']:
-    rxList.append(MT.Rx(locs,rxType))
+    rxList.append(NSEM.Rx(locs,rxType))
 # Source list
 srcList =[]
 for freq in freqList:
-    srcList.append(MT.SrcMT.polxy_1Dprimary(rxList,freq))
+    srcList.append(NSEM.SrcNSEM.polxy_1Dprimary(rxList,freq))
 # Survey MT
-survey = MT.Survey(srcList)
+survey = NSEM.Survey(srcList)
 # Background 1D model
 sigma1d = mesh.r(bgsigma,'CC','CC','M')[0,0,:]
 ## Setup the problem object
-problem = MT.Problem3D.eForm_ps(mesh,sigmaPrimary = sigma1d)
+problem = NSEM.Problem3D_ePrimSec(mesh,sigmaPrimary = sigma1d)
 problem.verbose = True
 
 problem.Solver = MumpsSolver
@@ -55,7 +55,7 @@ print 'Ran for {:f}'.format(time.time()-stTime)
 stTime = time.time()
 print 'Starting projecting fields to data at ' + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 sys.stdout.flush()
-mtData = MT.Data(survey,survey.eval(FmtSer))
+mtData = NSEM.Data(survey,survey.eval(FmtSer))
 print 'Ended projection of fields at ' + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print 'Ran for {:f}'.format(time.time()-stTime)
 mtStArr = mtData.toRecArray('Complex')
