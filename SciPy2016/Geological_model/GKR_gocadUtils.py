@@ -154,7 +154,7 @@ def gocad2simpegMeshIndex(gcFile,mesh,extractBoundaryCells=True,extractInside=Tr
 def makeVTPFiles():
 
     # Read in topo surface
-    geosurf = ['CDED_Lake_Coarse.ts','Till.ts','XVK.ts','PK1.ts','PK2.ts','PK3.ts','HK1.ts','VK.ts']
+    geosurf = ['CDED_Lake_Coarse.ts','Till.ts','XVK.ts','PK1.ts','PK1_extended.ts','PK2.ts','PK3.ts','HK1.ts','VK.ts']
 
     # The make the polydata
     polyDict = {}
