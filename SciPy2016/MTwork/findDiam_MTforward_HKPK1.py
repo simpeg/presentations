@@ -20,6 +20,7 @@ sigma = modDict['S/m']
 bgsigma = np.ones_like(sigma)*1e-8
 bgsigma[sigma > 9.999e-7] = 0.01
 
+
 # for loc in locs:
 #     # NOTE: loc has to be a (1,3) np.ndarray otherwise errors accure
 #     for rxType in ['zxxr','zxxi','zxyr','zxyi','zyxr','zyxi','zyyr','zyyi']:
@@ -59,16 +60,16 @@ mtData = NSEM.Data(survey,survey.eval(FmtSer))
 print 'Ended projection of fields at ' + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 print 'Ran for {:f}'.format(time.time()-stTime)
 mtStArr = mtData.toRecArray('Complex')
-SimPEG.np.save('MTdataStArr_nsmesh_HKPK1',mtStArr)
+SimPEG.np.save('MTdataStArr_nsmesh_HKPK1Fin',mtStArr)
 try:
-    pickle.dump(open('MTfields_HKPK1.pkl','wb'),FmtSer)
+    pickle.dump(open('MTfields_HKPK1Fin.pkl','wb'),FmtSer)
 except:
-fieldsDict = {}
-for freq in survey.freqs:
-    src = survey.getSrcByFreq(freq)
-    fieldsDict[freq] = {'e_pxSolution':FmtSer[src,'e_pxSolution'],'e_pySolution':FmtSer[src,'e_pySolution']}
-with open('MTfields_HKPK1.pkl','wb') as out:
-    pickle.dump(fieldsDict,out,2)
+    fieldsDict = {}
+    for freq in survey.freqs:
+        src = survey.getSrcByFreq(freq)
+        fieldsDict[freq] = {'e_pxSolution':FmtSer[src,'e_pxSolution'],'e_pySolution':FmtSer[src,'e_pySolution']}
+    with open('MTfields_HKPK1Fin.pkl','wb') as out:
+        pickle.dump(fieldsDict,out,2)
 
 del FmtSer, mtStArr, mtData
 gc.collect()
