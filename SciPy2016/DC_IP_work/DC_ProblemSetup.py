@@ -82,17 +82,19 @@ def run(plotIt=True):
     # mesh = Mesh.TensorMesh([hx, hy, hz],x0="CCN")
 
     # Load TKC synthetic model
-    sigma = mesh.readModelUBC("VTKout_DC.dat")
+    sigma = mesh.readModelUBC("./Geological_model/VTKout_DC_10mCells.dat")
 
+    # Identify air cells
     airind = sigma==1e-8
     mesh2D, topoCC = gettopoCC(mesh, airind)
 
     # Define electrode locations
 
     # Find start and end locations of each line
-    lineSpace = 50.
-    coreOffset = 150.
-	lineY = np.linspace(y0_core + coreOffset , np.abs(y0_core) - coreOffset, num=((2*(np.abs(y0_core)-coreOffset))/lineSpace))
+    elecSpace = 50.
+    coreOffset = 150 + dx/2.
+    elecX = np.linspace(x0_core + coreOffset , np.abs(x0_core) - coreOffset, num=((2*(np.abs(x0_core)-coreOffset))/elecSpace) + 1)
+    elecY = np.linspace(y0_core + coreOffset , np.abs(y0_core) - coreOffset, num=((2*(np.abs(y0_core)-coreOffset))/elecSpace) + 1)
 
 
     Utils.gen_DCIPsurvey()
