@@ -19,6 +19,7 @@ mshfile = 'TKC_Synth_DC_10mCells.msh'
 # Load mesh file
 mesh = Mesh.TensorMesh.readUBC(work_dir+mshfile)
 
+print mesh
 # Load in observation file
 #[B,M,dobs] = PF.BaseMag.readUBCmagObs(obsfile)
 
@@ -26,7 +27,7 @@ mesh = Mesh.TensorMesh.readUBC(work_dir+mshfile)
 topsurf = work_dir+'CDED_Lake_Coarse.ts'
 geosurf = [[work_dir+'Till.ts',True,True],
             [work_dir+'XVK.ts',True,True],
-            [work_dir+'PK1_extended.ts',True,True],
+            [work_dir+'PK1.ts',True,True],
             [work_dir+'PK2.ts',True,True],
            [work_dir+'PK3.ts',True,True],
 [work_dir+'HK1.ts',True,True],
@@ -186,7 +187,7 @@ for ii in range(len(geosurf)):
 
     model[indx] = vals[ii]
 
-indx = gocad2vtk(topsurf,mesh, bcflag = False, inflag = True)
+indx = gocad2vtk(topsurf, mesh, bcflag = False, inflag = True)
 actv = np.zeros(mesh.nC)
 actv[indx] = 1
 
