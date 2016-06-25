@@ -21,16 +21,16 @@ geosurf = OrderedDict(
 ])
 
 def getmask(key):
-    mask = np.zeros(mesh.nC)
+    mask = np.zeros(mesh.nC, dtype=np.bool)
     indx = gocad2vtk(geosurf[key][0], mesh, geosurf[key][1], geosurf[key][2])
-    mask[indx] = 1
+    mask[indx] = True
     return mask
 
 p = multiprocessing.Pool()
 
 keys = geosurf.keys()
 masks = list(p.map(getmask, keys))
-masks[-1] = 1 - masks[-1] # Flip sign of air layer
+masks[-1] = True - masks[-1] # Flip sign of air layer
 
 mfile = h5py.File('masks.hdf5')
 for i, key in enumerate(keys):
