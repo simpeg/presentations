@@ -6,6 +6,7 @@ from SimPEG import Mesh
 from dommagic import gocad2vtk
 
 mshfile = 'seismic.msh'
+hdf5file = 'masks.hdf5'
 mesh = Mesh.TensorMesh.readUBC(mshfile)
 
 geosurf = OrderedDict(
@@ -26,12 +27,13 @@ def getmask(key):
     mask[indx] = True
     return mask
 
-p = multiprocessing.Pool()
-
 keys = geosurf.keys()
+p = multiprocessing.Pool()
 masks = list(p.map(getmask, keys))
-masks[-1] = True - masks[-1] # Flip sign of air layer
+p.close()
+aind = keys.index('air')
+masks[aind] = True ^ masks[aind]
 
-mfile = h5py.File('masks.hdf5')
+mfile = h5py.File(hdf5file)
 for i, key in enumerate(keys):
     mfile[key] = masks[i].reshape((mesh.nCz, mesh.nCy, mesh.nCx))
