@@ -1,7 +1,5 @@
 # Import modules
 import numpy as np, sys, os, time, gzip, cPickle as pickle, scipy
-sys.path.append('/tera_raid/gudni/gitCodes/simpegmt')
-sys.path.append('/tera_raid/gudni/gitCodes/simpegem')
 sys.path.append('/tera_raid/gudni/gitCodes/simpeg')
 sys.path.append('/tera_raid/gudni')
 from pymatsolver import MumpsSolver

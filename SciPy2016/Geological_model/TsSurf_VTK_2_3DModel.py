@@ -14,7 +14,7 @@ New scripts to be added to basecode
 
 work_dir = ''
 
-mshfile = 'MEsh_TEst.msh'
+mshfile = 'MEsh_TEst_extended.msh'
 
 # Load mesh file
 mesh = Mesh.TensorMesh.readUBC(work_dir+mshfile)
@@ -26,7 +26,7 @@ mesh = Mesh.TensorMesh.readUBC(work_dir+mshfile)
 topsurf = work_dir+'CDED_Lake_Coarse.ts'
 geosurf = [[work_dir+'Till.ts',True,True],
             [work_dir+'XVK.ts',True,True],
-            [work_dir+'PK1.ts',True,True],
+            [work_dir+'PK1_extended.ts',True,True],
             [work_dir+'PK2.ts',True,True],
            [work_dir+'PK3.ts',True,True],
 [work_dir+'HK1.ts',True,True],
