@@ -14,7 +14,7 @@ New scripts to be added to basecode
 
 work_dir = ''
 
-mshfile = 'MEsh_TEst_extended.msh'
+mshfile = 'Tile1.msh'
 
 # Load mesh file
 mesh = Mesh.TensorMesh.readUBC(work_dir+mshfile)
@@ -34,11 +34,11 @@ geosurf = [[work_dir+'Till.ts',True,True],
 ]
 
 # Background density
-bkgr = 1e-4
-airc = 1e-8
+bkgr = 0
+airc = 0
 
 # Units
-vals = np.asarray([1e-2,3e-2,5e-2,2e-2,2e-2,1e-3,5e-3])
+vals = np.asarray([1,2,3,4,5,6,7])
 
 #%% Script starts here       
 # # Create a grid of observations and offset the z from topo
