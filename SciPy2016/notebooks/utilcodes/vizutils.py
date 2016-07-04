@@ -1,6 +1,6 @@
 from SimPEG import Mesh, Utils
 import numpy as np
-
+from matplotlib.ticker import FormatStrFormatter
 import matplotlib.pyplot as plt
 
 def gettopoCC(mesh, airind):
@@ -21,13 +21,20 @@ def gettopoCC(mesh, airind):
     XY = Utils.ndgrid(mesh.vectorCCx, mesh.vectorCCy)
     return mesh2D, topoCC
 
-
-def viz(mesh, sigma, ind, airind, normal="Z", ax=None, label="Conductivity (S/m)", scale="log", clim=(-4, -1)):
+def viz(mesh, sigma, ind, airind, normal="Z", ax=None, label="Conductivity (S/m)", scale="log", clim=(-4, -1), \
+        xc=0, yc=0,zc=0., cb=True):
     if normal == "Z":
-        fig = plt.figure(figsize=(5*1.2, 5))
+        if cb:
+            fig = plt.figure(figsize=(5*1.2, 5))
+        else:
+            fig = plt.figure(figsize=(5, 5))
         ax = plt.subplot(111)
     elif normal == "Y":
-        fig = plt.figure(figsize=(5*1.2, 2.5))
+        if cb:
+            fig = plt.figure(figsize=(5*1.2, 2.5))
+        else:
+            fig = plt.figure(figsize=(5, 2.5))
+
         ax = plt.subplot(111)
     temp = sigma.copy()
 
@@ -40,26 +47,36 @@ def viz(mesh, sigma, ind, airind, normal="Z", ax=None, label="Conductivity (S/m)
     if normal == "Z":
         ax.set_xlabel("Easting (m)")
         ax.set_ylabel("Northing (m)")
-        ax.set_xlim(-500, 500)
-        ax.set_ylim(-500, 500.)
-        ax.set_title(("Eleveation at %.1f m")%(mesh.vectorCCy[ind]))
+        xmin, xmax = -500+xc, 500+xc
+        ymin, ymax = -500+yc, 500.+yc
+        ax.set_title(("Elevation at %.1f m")%(mesh.vectorCCz[ind]))
     elif normal == "Y":
         ax.set_xlabel("Easting (m)")
         ax.set_ylabel("Elevation (m)")
-        ax.set_xlim(-500, 500)
-        ax.set_ylim(-500, 0.)
+        xmin, xmax = -500+xc, 500+xc
+        ymin, ymax = -500+zc, 0.+zc
         ax.set_title(("Northing at %.1f m")%(mesh.vectorCCy[ind]))
+
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.0f'))
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
+    ax.set_xticks(np.linspace(xmin, xmax, 3))
+    ax.set_yticks(np.linspace(ymin, ymax, 3))
+    ax.set_xlim(xmin, xmax)
+    ax.set_ylim(ymin, ymax)
+
+
     if scale == "log":
         cbformat = "$10^{%1.1f}$"
     elif scale == "linear":
         cbformat = "%.1e"
 
-    cb = plt.colorbar(dat[0], format=cbformat, ticks=np.linspace(clim[0], clim[1], 3))
-    cb.set_label(label)
+    if cb:
+        cb = plt.colorbar(dat[0], format=cbformat, ticks=np.linspace(clim[0], clim[1], 3))
+        cb.set_label(label)
     # plt.show()
     return ax
 
-def vizEJ(mesh, sigma, ind, f, src, airind, normal="Z", ftype="E", clim=None):
+def vizEJ(mesh, sigma, ind, f, src, airind, normal="Z", ftype="E", clim=None, xc=0, yc=0,zc=0.):
     if normal == "Z":
         fig = plt.figure(figsize=(5*1.2, 5))
         ax = plt.subplot(111)
@@ -71,22 +88,45 @@ def vizEJ(mesh, sigma, ind, f, src, airind, normal="Z", ftype="E", clim=None):
 
     if ftype == "E":
         dat=mesh.plotSlice(f[src,'e'], vType="F", view="vec", ind=ind, normal=normal, grid=False, streamOpts={'color':'w'}, pcolorOpts={"cmap":"viridis"}, ax=ax)
-        ax.set_title("Electric fields (V/m)")
+        cb_label = "Electric fields (V/m)"
+    elif ftype == "phi":
+        dat=mesh.plotSlice(f[src,'phi'], ind=ind, normal=normal, pcolorOpts={"cmap":"viridis"}, ax=ax)
+        cb_label = "Potential (V)"
     elif ftype == "charg":
         dat=mesh.plotSlice(f[src,'charge'], ind=ind, normal=normal, pcolorOpts={"cmap":"viridis"}, ax=ax)
-        ax.set_title("Electric charges (C)")
+        cb_label = "Electric charges (C)"
     elif ftype == "J":
         dat=mesh.plotSlice(f[src,'j'], vType="F", view="vec", ind=ind, normal=normal, grid=False, streamOpts={'color':'w'}, pcolorOpts={"cmap":"viridis"}, ax=ax)
-        ax.set_title("Electric currents (V/m)")
+        cb_label = "Electric currents (V/m)"
     ax.set_xlabel("Easting (m)")
 
-    vmin, vmax = dat[0].get_clim()
-    if normal == "Z":
-        ax.set_xlim(-700, 700)
-        ax.set_ylim(-700, 700.)
-        ax.set_ylabel("Northing (m)")
-    else:
-        ax.set_xlim(-700, 700)
-        ax.set_ylim(-700, 0.)
-        ax.set_ylabel("Elevation (m)")
+    if clim is None:
+        vmin, vmax = dat[0].get_clim()
+
     cb = plt.colorbar(dat[0], format="%1.1e", ticks=np.linspace(vmin, vmax, 3))
+    cb.set_label(cb_label)
+
+    if normal == "Z":
+        ax.set_xlabel("Easting (m)")
+        ax.set_ylabel("Northing (m)")
+        xmin, xmax = -700+xc, 700+xc
+        ymin, ymax = -700+yc, 700.+yc
+        ax.set_title(("Elevation at %.1f m")%(mesh.vectorCCz[ind]))
+    elif normal == "Y":
+        ax.set_xlabel("Easting (m)")
+        ax.set_ylabel("Elevation (m)")
+        xmin, xmax = -700+xc, 700+xc
+        ymin, ymax = -700+zc, 0.+zc
+        ax.set_title(("Northing at %.1f m")%(mesh.vectorCCy[ind]))
+
+
+    ax.yaxis.set_major_formatter(FormatStrFormatter('%.0f'))
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.0f'))
+    ax.set_xticks(np.linspace(xmin, xmax, 3))
+    ax.set_yticks(np.linspace(ymin, ymax, 3))
+    ax.set_xlim(xmin, xmax)
+    ax.set_ylim(ymin, ymax)
+
+    return ax
+
+
