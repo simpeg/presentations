@@ -21,20 +21,16 @@ def gettopoCC(mesh, airind):
     XY = Utils.ndgrid(mesh.vectorCCx, mesh.vectorCCy)
     return mesh2D, topoCC
 
-def viz(mesh, sigma, ind, airind, normal="Z", ax=None, label="Conductivity (S/m)", scale="log", clim=(-4, -1), \
-        xc=0, yc=0,zc=0., cb=True):
+def viz(mesh, sigma, ind, airind, normal="Z", ax=None, label="Conductivity (S/m)", scale="log", clim=(-4, -1), xc=0, yc=0,zc=0., cb=True):
     if normal == "Z":
-        if cb:
+        if ax is None:
             fig = plt.figure(figsize=(5*1.2, 5))
-        else:
-            fig = plt.figure(figsize=(5, 5))
-    elif normal == "Y":
-        if cb:
+            ax = plt.subplot(111)
+    else:
+        if ax is None:
             fig = plt.figure(figsize=(5*1.2, 2.5))
-        else:
-            fig = plt.figure(figsize=(5, 2.5))
-    if ax is None:
-        ax = plt.subplot(111)
+            ax = plt.subplot(111)
+
     temp = sigma.copy()
 
     if scale == "log":
