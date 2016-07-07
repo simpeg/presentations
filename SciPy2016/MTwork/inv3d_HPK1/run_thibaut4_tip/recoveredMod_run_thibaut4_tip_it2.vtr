@@ -8,15 +8,9 @@
         <DataArray type="Float64" Name="S/m" format="appended" RangeMin="1e-08"                RangeMax="0.0018539438058"      offset="0"                   />
       </CellData>
       <Coordinates>
-<<<<<<< HEAD
-        <DataArray type="Float64" Name="Array 0x62294b0" format="appended" RangeMin=""                     RangeMax=""                     offset="736088"              />
-        <DataArray type="Float64" Name="Array 0x5ec02b0" format="appended" RangeMin=""                     RangeMax=""                     offset="736320"              />
-        <DataArray type="Float64" Name="Array 0x63513e0" format="appended" RangeMin=""                     RangeMax=""                     offset="736572"              />
-=======
-        <DataArray type="Float64" Name="Array 0x1178449e0" format="appended" RangeMin=""                     RangeMax=""                     offset="736092"              />
-        <DataArray type="Float64" Name="Array 0x117843cd0" format="appended" RangeMin=""                     RangeMax=""                     offset="736324"              />
-        <DataArray type="Float64" Name="Array 0x117844aa0" format="appended" RangeMin=""                     RangeMax=""                     offset="736576"              />
->>>>>>> 69126a678dd43a48eb492829659e1f17e7d845f8
+        <DataArray type="Float64" Name="Array 0x16671270" format="appended" RangeMin=""                     RangeMax=""                     offset="736088"              />
+        <DataArray type="Float64" Name="Array 0x17de9b00" format="appended" RangeMin=""                     RangeMax=""                     offset="736320"              />
+        <DataArray type="Float64" Name="Array 0x17510720" format="appended" RangeMin=""                     RangeMax=""                     offset="736572"              />
       </Coordinates>
     </Piece>
   </RectilinearGrid>
