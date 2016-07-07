@@ -63,7 +63,7 @@ def viz(mesh, sigma, ind, airind, normal="Z", ax=None, label="Conductivity (S/m)
     ax.set_yticks(np.linspace(ymin, ymax, 3))
     ax.set_xlim(xmin, xmax)
     ax.set_ylim(ymin, ymax)
-
+    # plt.tight_layout()
 
     if scale == "log":
         cbformat = "$10^{%1.1f}$"
