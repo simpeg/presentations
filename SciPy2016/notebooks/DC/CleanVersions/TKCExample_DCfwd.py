@@ -86,6 +86,9 @@ mtrue = np.log(sigma)[~airind]
 f0 = problem.fields(m0)
 f = problem.fields(mtrue)
 
+# Get observed data
+dobs = survey.dpred(mtrue, f=f)
+
 # Compute secondary potential
 phi_sec = f[src1, "phi"] - f0[src1, "phi"]
 
