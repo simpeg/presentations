@@ -28,6 +28,7 @@ indMTFreq = np.sum( [drecAll['freq'] == val for val in  np.unique(drecAll['freq'
 mtRecArr = drecAll[indMTFreq][['freq','x','y','z','zxy','zyx']]
 dUse = NSEM.Data.fromRecArray(mtRecArr)
 
+
 # Extract to survey
 survey = dUse.survey
 
