@@ -1,14 +1,17 @@
 from SimPEG import Mesh, Utils, np, Maps, Survey
 from SimPEG.EM.Static import DC, IP
+from SimPEG import DataMisfit, Regularization, Optimization, Directives, InvProblem, Inversion
 from pymatsolver import MumpsSolver
 import sys
 sys.path.append("./utilcodes/")
 from vizutils import gettopoCC, viz, vizEJ
-
-from SimPEG import DataMisfit, Regularization, Optimization, Directives, InvProblem, Inversion
 import pickle
 
 
+
+########################
+# General Problem Setup
+########################
 
 # Setup tensor mesh
 
@@ -64,6 +67,12 @@ Nx_dr = np.c_[Nx[:,0], Nx[:,1], topoCC[inds_Nx]]
 rx_x = DC.Rx.Dipole(Mx_dr, Nx_dr)
 src1 = DC.Src.Dipole([rx_x], Aloc1_x, Bloc1_x)
 
+
+########################
+# DC Problem
+########################
+
+
 #Setup mappings
 # Inversion model is log conductivity in the subsurface. This can be realized as a following mapping:
 expmap = Maps.ExpMap(mesh) # from log conductivity to conductivity
@@ -90,62 +99,109 @@ f0 = problem.fields(m0)
 f = problem.fields(mtrue)
 
 # Get observed data
-dobs = survey.dpred(mtrue, f=f)
+DCdobs = survey.dpred(mtrue, f=f)
+DCobsdata = Survey.Data(survey, v=DCdobs)
 
 # Compute secondary potential
 phi_sec = f[src1, "phi"] - f0[src1, "phi"]
 
+# Load DC inversion results
+DCresults = pickle.load(open( "DCresults", "rb" ))
+# print DCresults.keys()
 
-# Inversion
+# Get inversion model
+sigopt = DCresults['sigma_inv']
+
+# Get predicted data
+DCdpred = DCresults['Pred']
+DCpreddata = Survey.Data(survey, v=DCdpred)
+
+
+########################
+# IP Problem
+########################
+
+
+# Load synthetic chargeability model matching the designated mesh
+eta = mesh.readModelUBC("VTKout_eta.dat")
+
+# Generate true IP data using true conductivity model
+actmapIP = Maps.InjectActiveCells(mesh, ~airind, 0.)
+problemIP = IP.Problem3D_CC(mesh, rho=1./sigma, Ainv=problem.Ainv, f=f, mapping=actmapIP)
+problemIP.Solver = MumpsSolver
+surveyIP = IP.Survey([src1])
+problemIP.pair(surveyIP)
+dataIP = surveyIP.dpred(eta[~airind])
+
+# Use estimated conductivity model to compute sensitivity function
+# survey = DC.Survey([src1])
+# problem = DC.Problem3D_CC(mesh)
+# problem.Solver = MumpsSolver
+# problem.pair(survey)
+fopt = problem.fields(np.log(sigopt[~airind]))
+problemIP = IP.Problem3D_CC(mesh, rho=1./sigopt, Ainv=problem.Ainv, f=fopt, mapping=actmapIP)
+problemIP.Solver = MumpsSolver
+surveyIP = IP.Survey([src1])
+problemIP.pair(surveyIP)
+
+ipdata = Survey.Data(surveyIP, v=dataIP)
+
+
+# Setup IP inversion
 
 # Depth weighting
 depth = 1./(abs(mesh.gridCC[:,2]-zc))**1.5
 depth = depth/depth.max()
 
+# Assign uncertainties
+std = 0.
+eps = abs(dataIP).max()*0.01
+surveyIP.std = std
+surveyIP.eps = eps
+# Define initial and reference model
+m0 = np.ones(mesh.nC)[~airind]*1e-20
+
 # Setup inversion object
 regmap = Maps.IdentityMap(nP=m0.size)
-# Assign uncertainties
-std = 0.05
-eps = 1e-3
-survey.std = std
-survey.eps = eps
-survey.dobs = dobs
+# Set observed data for inversion object
+surveyIP.dobs = dataIP
 # Define datamisfit portion of objective function
-dmisfit = DataMisfit.l2_DataMisfit(survey)
+dmisfit = DataMisfit.l2_DataMisfit(surveyIP)
 # Define regulatization (model objective function)
 reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind)
 reg.wght = depth[~airind]
-opt = Optimization.InexactGaussNewton(maxIter = 20)
+# reg.wght = weight
+opt = Optimization.ProjectedGNCG(maxIter = 10)
+opt.lower = 0.
 invProb = InvProblem.BaseInvProblem(dmisfit, reg, opt)
 # Define inversion parameters
-beta = Directives.BetaSchedule(coolingFactor=5, coolingRate=2)
-betaest = Directives.BetaEstimate_ByEig(beta0_ratio=1e0)
+beta = Directives.BetaSchedule(coolingFactor=5, coolingRate=3)
+betaest = Directives.BetaEstimate_ByEig(beta0_ratio=1.)
 save = Directives.SaveOutputEveryIteration()
-savemodel = Directives.SaveModelEveryIteration()
 target = Directives.TargetMisfit()
-inv = Inversion.BaseInversion(invProb, directiveList=[beta,betaest, save, target, savemodel])
+
+savemodel = Directives.SaveModelEveryIteration()
+inv = Inversion.BaseInversion(invProb, directiveList=[betaest, beta, save, target, savemodel])
 reg.alpha_s = 1e-1
 reg.alpha_x = 1.
 reg.alpha_y = 1.
 reg.alpha_z = 1.
-problem.counter = opt.counter = Utils.Counter()
+problemIP.counter = opt.counter = Utils.Counter()
 opt.LSshorten = 0.5
 opt.remember('xc')
 
-# Run inversion
-mopt = inv.run(m0)
+# Run IP inversion
+mIPopt = inv.run(m0)
+# # problemIP.Ainv.clean()
 
 # Apply mapping to model to get and save recovered conductivity
-sigopt = mapping*mopt
-# np.save("sigest_singlesrc_withdweights", sigopt)
+etaopt = mapping*mIPopt
 
 # Calculate dpred
-dpred = survey.dpred(np.log(sigopt[~airind]))
+IPdpred = survey.dpred(np.log(etaopt[~airind]))
 
 # Pickle results for easy access
-Results = {"sigma_true":sigma, "sigma_inv":sigopt, "Obs":dobs, "Pred":dpred}
-outputs = open("DCresults", 'wb')
+Results = {"eta_true":eta, "eta_inv":etaopt, "IPObs":ipdata, "IPPred":IPdpred}
+outputs = open("IPresults", 'wb')
 pickle.dump(Results, outputs)
 outputs.close()
-
-
