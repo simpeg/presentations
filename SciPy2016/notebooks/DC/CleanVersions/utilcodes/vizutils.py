@@ -38,7 +38,7 @@ def viz(mesh, sigma, ind, airind, normal="Z", ax=None, label="Conductivity (S/m)
 
     temp[airind] = np.nan
 
-    dat = mesh.plotSlice(temp, ind=ind, clim=clim, normal=normal, grid=True, pcolorOpts={"cmap":"viridis"}, ax=ax)
+    dat = mesh.plotSlice(temp, ind=ind, clim=clim, normal=normal, grid=False, pcolorOpts={"cmap":"viridis"}, ax=ax)
     if normal == "Z":
         ax.set_xlabel("Easting (m)")
         ax.set_ylabel("Northing (m)")
