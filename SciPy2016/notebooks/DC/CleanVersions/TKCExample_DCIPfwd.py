@@ -125,22 +125,18 @@ eta = mesh.readModelUBC("VTKout_eta.dat")
 
 # Generate true IP data using true conductivity model
 actmapIP = Maps.InjectActiveCells(mesh, ~airind, 0.)
+# fopt = problem.fields(np.log(sigopt[~airind]))
 problemIP = IP.Problem3D_CC(mesh, rho=1./sigma, Ainv=problem.Ainv, f=f, mapping=actmapIP)
 problemIP.Solver = MumpsSolver
 surveyIP = IP.Survey([src1])
 problemIP.pair(surveyIP)
+
 dataIP = surveyIP.dpred(eta[~airind])
+# ipdata = Survey.Data(surveyIP, v=dataIP)
 
-# Use estimated conductivity model to compute sensitivity function
-# survey = DC.Survey([src1])
-# problem = DC.Problem3D_CC(mesh)
-# problem.Solver = MumpsSolver
-# problem.pair(survey)
-fopt = problem.fields(np.log(sigopt[~airind]))
-problemIP = IP.Problem3D_CC(mesh, rho=1./sigopt, Ainv=problem.Ainv, f=fopt, mapping=actmapIP)
-problemIP.Solver = MumpsSolver
-surveyIP = IP.Survey([src1])
-problemIP.pair(surveyIP)
-
-ipdata = Survey.Data(surveyIP, v=dataIP)
+# Pickle results for easy access
+Results = {"eta_true":eta, "IPObs":dataIP}
+outputs = open("IPfwd", 'wb')
+pickle.dump(Results, outputs)
+outputs.close()
 

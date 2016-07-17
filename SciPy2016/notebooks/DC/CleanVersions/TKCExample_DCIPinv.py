@@ -8,7 +8,6 @@ from vizutils import gettopoCC, viz, vizEJ
 import pickle
 
 
-
 ########################
 # General Problem Setup
 ########################
@@ -73,78 +72,46 @@ src1 = DC.Src.Dipole([rx_x], Aloc1_x, Bloc1_x)
 ########################
 
 
-#Setup mappings
-# Inversion model is log conductivity in the subsurface. This can be realized as a following mapping:
-expmap = Maps.ExpMap(mesh) # from log conductivity to conductivity
-actmap = Maps.InjectActiveCells(mesh, ~airind, np.log(1e-8)) # from subsurface cells to full3D cells
-mapping = expmap*actmap
-
-
-# Create inital and reference model (1e-4 S/m)
-m0 = np.ones_like(sigma)[~airind]*np.log(1e-4)
 
 # Form survey object using Srcs and Rxs that we have generated
 survey = DC.Survey([src1])
 # Define problem and set solver
-problem = DC.Problem3D_CC(mesh, mapping=mapping)
-problem.Solver = MumpsSolver
+problemDC = DC.Problem3D_CC(mesh)
+problemDC.Solver = MumpsSolver
 # Pair problem and survey
-problem.pair(survey)
+problemDC.pair(survey)
 
-# Define true model based on mapping
-mtrue = np.log(sigma)[~airind]
-
-# Forward model fields due to the reference model and true model
-f0 = problem.fields(m0)
-f = problem.fields(mtrue)
-
-# Get observed data
-DCdobs = survey.dpred(mtrue, f=f)
-DCobsdata = Survey.Data(survey, v=DCdobs)
-
-# Compute secondary potential
-phi_sec = f[src1, "phi"] - f0[src1, "phi"]
 
 # Load DC inversion results
 DCresults = pickle.load(open( "DCresults", "rb" ))
-# print DCresults.keys()
 
 # Get inversion model
 sigopt = DCresults['sigma_inv']
 
-# Get predicted data
-DCdpred = DCresults['Pred']
-DCpreddata = Survey.Data(survey, v=DCdpred)
 
 
 ########################
 # IP Problem
 ########################
 
+# Load IP data and model object
+IPfwd = pickle.load(open( "IPfwd", "rb" ))
+# print IPfwd.keys()
 
-# Load synthetic chargeability model matching the designated mesh
-eta = mesh.readModelUBC("VTKout_eta.dat")
+# Get inversion model
+eta = IPfwd['eta_true']
 
-# Generate true IP data using true conductivity model
-actmapIP = Maps.InjectActiveCells(mesh, ~airind, 0.)
-problemIP = IP.Problem3D_CC(mesh, rho=1./sigma, Ainv=problem.Ainv, f=f, mapping=actmapIP)
-problemIP.Solver = MumpsSolver
-surveyIP = IP.Survey([src1])
-problemIP.pair(surveyIP)
-dataIP = surveyIP.dpred(eta[~airind])
+# Get observed data
+IPdobs = IPfwd['IPObs']
+
 
 # Use estimated conductivity model to compute sensitivity function
-# survey = DC.Survey([src1])
-# problem = DC.Problem3D_CC(mesh)
-# problem.Solver = MumpsSolver
-# problem.pair(survey)
-fopt = problem.fields(np.log(sigopt[~airind]))
-problemIP = IP.Problem3D_CC(mesh, rho=1./sigopt, Ainv=problem.Ainv, f=fopt, mapping=actmapIP)
+mapping = Maps.InjectActiveCells(mesh, ~airind, 0.)
+fopt = problemDC.fields(sigopt)
+problemIP = IP.Problem3D_CC(mesh, rho=1./sigopt, Ainv=problemDC.Ainv, f=fopt, mapping=mapping)
 problemIP.Solver = MumpsSolver
 surveyIP = IP.Survey([src1])
 problemIP.pair(surveyIP)
-
-ipdata = Survey.Data(surveyIP, v=dataIP)
 
 
 # Setup IP inversion
@@ -155,7 +122,7 @@ depth = depth/depth.max()
 
 # Assign uncertainties
 std = 0.
-eps = abs(dataIP).max()*0.01
+eps = abs(IPdobs).max()*0.01
 surveyIP.std = std
 surveyIP.eps = eps
 # Define initial and reference model
@@ -164,14 +131,14 @@ m0 = np.ones(mesh.nC)[~airind]*1e-20
 # Setup inversion object
 regmap = Maps.IdentityMap(nP=m0.size)
 # Set observed data for inversion object
-surveyIP.dobs = dataIP
+surveyIP.dobs = IPdobs
 # Define datamisfit portion of objective function
 dmisfit = DataMisfit.l2_DataMisfit(surveyIP)
 # Define regulatization (model objective function)
 reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind)
 reg.wght = depth[~airind]
 # reg.wght = weight
-opt = Optimization.ProjectedGNCG(maxIter = 10)
+opt = Optimization.ProjectedGNCG(maxIter = 15)
 opt.lower = 0.
 invProb = InvProblem.BaseInvProblem(dmisfit, reg, opt)
 # Define inversion parameters
@@ -192,16 +159,18 @@ opt.remember('xc')
 
 # Run IP inversion
 mIPopt = inv.run(m0)
-# # problemIP.Ainv.clean()
 
 # Apply mapping to model to get and save recovered conductivity
 etaopt = mapping*mIPopt
 
 # Calculate dpred
-IPdpred = survey.dpred(np.log(etaopt[~airind]))
+
+# IPdpred = surveyIP.dpred(np.log(etaopt[~airind]))
+IPdpred = invProb.dpred
+
 
 # Pickle results for easy access
-Results = {"eta_true":eta, "eta_inv":etaopt, "IPObs":ipdata, "IPPred":IPdpred}
+Results = {"eta_true":eta, "eta_inv":etaopt, "IPObs":IPdobs, "IPPred":IPdpred}
 outputs = open("IPresults", 'wb')
 pickle.dump(Results, outputs)
 outputs.close()
