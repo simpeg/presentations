@@ -64,7 +64,7 @@ Nx_dr = np.c_[Nx[:,0], Nx[:,1], topoCC[inds_Nx]]
 rx_x = DC.Rx.Dipole(Mx_dr, Nx_dr)
 src1 = DC.Src.Dipole([rx_x], Aloc1_x, Bloc1_x)
 
-#Setup mappings
+# Setup mappings
 # Inversion model is log conductivity in the subsurface. This can be realized as a following mapping:
 expmap = Maps.ExpMap(mesh) # from log conductivity to conductivity
 actmap = Maps.InjectActiveCells(mesh, ~airind, np.log(1e-8)) # from subsurface cells to full3D cells

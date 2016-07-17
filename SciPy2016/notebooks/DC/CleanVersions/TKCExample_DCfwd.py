@@ -5,13 +5,11 @@ import sys
 sys.path.append("./utilcodes/")
 from vizutils import gettopoCC, viz, vizEJ
 
-
-
-# Setup tensor mesh
+### Mesh
 
 # Core cell sizes in x, y, and z
 csx, csy, csz = 25., 25., 25.
-# Number of core cells in each direction
+# Number of core cells in each directiPon s
 ncx, ncy, ncz = 48, 48, 20
 # Number of padding cells to add in each direction
 npad = 7
@@ -32,9 +30,14 @@ sigma = mesh.readModelUBC("VTKout_DC.dat")
 # Identify air cells in the model
 airind = sigma == 1e-8
 
+# Generate background model (constant conductiivty below topography)
+sigma0 = np.ones_like(sigma)*1e-4
+sigma0[airind] = 1e-8
+
+### Survey
+
 # Obtain topographic surface from 3D conductivity model
 mesh2D, topoCC = gettopoCC(mesh, airind)
-
 
 # Setup gradient array survey
 
@@ -61,37 +64,24 @@ Nx_dr = np.c_[Nx[:,0], Nx[:,1], topoCC[inds_Nx]]
 rx_x = DC.Rx.Dipole(Mx_dr, Nx_dr)
 src1 = DC.Src.Dipole([rx_x], Aloc1_x, Bloc1_x)
 
-#Setup mappings
-# Inversion model is log conductivity in the subsurface. This can be realized as a following mapping:
-expmap = Maps.ExpMap(mesh) # from log conductivity to conductivity
-actmap = Maps.InjectActiveCells(mesh, ~airind, np.log(1e-8)) # from subsurface cells to full3D cells
-mapping = expmap*actmap
-
-
-# Create inital and reference model (1e-4 S/m)
-m0 = np.ones_like(sigma)[~airind]*np.log(1e-4)
-
 # Form survey object using Srcs and Rxs that we have generated
 survey = DC.Survey([src1])
+
+### Problem
+
 # Define problem and set solver
-problem = DC.Problem3D_CC(mesh, mapping=mapping)
+problem = DC.Problem3D_CC(mesh)
+
 problem.Solver = MumpsSolver
 # Pair problem and survey
 problem.pair(survey)
 
-# Define true model based on mapping
-mtrue = np.log(sigma)[~airind]
-
 # Forward model fields due to the reference model and true model
-f0 = problem.fields(m0)
-f = problem.fields(mtrue)
+f0 = problem.fields(sigma0)
+f = problem.fields(sigma)
 
 # Get observed data
-dobs = survey.dpred(mtrue, f=f)
+dobs = survey.dpred(sigma, f=f)
 
 # Compute secondary potential
 phi_sec = f[src1, "phi"] - f0[src1, "phi"]
-
-
-
-
