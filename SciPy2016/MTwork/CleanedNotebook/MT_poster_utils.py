@@ -1,7 +1,5 @@
 from IPython.display import HTML
-import SimPEG as simpeg, sys
 import numpy as np
-from SimPEG import NSEM
 from SimPEG.NSEM.Utils import plotDataTypes as pDt
 import matplotlib.pyplot as plt
 
