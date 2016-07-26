@@ -1,9 +1,6 @@
-from IPython.display import HTML
 import numpy as np
 from SimPEG.NSEM.Utils import plotDataTypes as pDt
 import matplotlib.pyplot as plt
-
-
 
 # Define the area of interest
 bw, be = 557100, 557580
