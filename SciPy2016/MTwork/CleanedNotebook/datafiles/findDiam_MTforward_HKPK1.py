@@ -1,8 +1,6 @@
 # Script to make "simple" geothermal models to show effects of shallow structures.
 import numpy as np, sys, os, time, gzip, cPickle as pickle, scipy, gc
 from glob import glob
-#sys.path.append('/tera_raid/gudni/gitCodes/simpeg')
-#sys.path.append('/tera_raid/gudni/gitCodes/simpegem')
 import SimPEG as simpeg
 import SimPEG
 from SimPEG import NSEM
@@ -61,23 +59,3 @@ print 'Ended projection of fields at ' + time.strftime("%Y-%m-%d %H:%M:%S", time
 print 'Ran for {:f}'.format(time.time()-stTime)
 mtStArr = mtData.toRecArray('Complex')
 SimPEG.np.save('MTdataStArr_nsmesh_HKPK1Coarse_noExtension',mtStArr)
-try:
-    pickle.dump(open('MTfields_HKPK1Coarse.pkl','wb'),FmtSer)
-except:
-    fieldsDict = {}
-    for freq in survey.freqs:
-        src = survey.getSrcByFreq(freq)
-        fieldsDict[freq] = {'e_pxSolution':FmtSer[src,'e_pxSolution'],'e_pySolution':FmtSer[src,'e_pySolution']}
-    with open('MTfields_HKPK1Coarse.pkl','wb') as out:
-        pickle.dump(fieldsDict,out,2)
-
-del FmtSer, mtStArr, mtData
-gc.collect()
-
-# Read in the fields dicts
-if False:
-    FmtSer = problem.fieldsPair()
-    for freq, fD in fieldsDict.iteritems():
-        src = survey.getSrcByFreq(freq)
-        FmtSer[src,'e_pxSolution'] = fD['e_pxSolution']
-        FmtSer[src,'e_pySolution'] = fD['e_pySolution']

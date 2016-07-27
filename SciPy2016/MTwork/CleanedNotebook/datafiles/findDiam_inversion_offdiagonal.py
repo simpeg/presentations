@@ -34,15 +34,12 @@ survey = dUse.survey
 # # Add noise to the data
 dobs, freqArr, rxT = getDataInfo(dUse)
 # Set the data
-
 survey.dobs = dobs
 
 #Find index of each type of data
 offind = np.array([('zxy' in l or 'zyx' in l) for l in rxT],bool)
-tipind = np.array([('tzy' in l or 'tzx' in l) for l in rxT],bool)
 
-#Check if we got all data type covered
-assert (offind + tipind).all() , 'Some indicies not included'
+
 
 #Initialize std
 std = np.zeros_like(dobs) # 5% on all off-diagonals
@@ -53,10 +50,9 @@ std = np.abs(survey.dobs*0.05)
 #std for tipper: floor of 0.001*median
 #std[tipind] = np.abs(np.median(survey.dobs[tipind])*0.001)
 # std[np.array([ ('xx' in l or 'yy' in l) for l in rxT])] = 0.15 # 15% on the on-diagonal
-survey.std = std 
+survey.std = std
 # Estimate a floor for the data.
-# Use the 10% of the mean of the off-diagonals for each frequency
-#onind = np.array([('zxx' in l or 'zyy' in l) for l in rxT],bool)
+# Use the 0.1% of the mean of the off-diagonals for each frequency
 
 floor = np.zeros_like(dobs)
 #floortip = 0.001
@@ -74,24 +70,22 @@ for f in np.unique(freqArr):
 # Assign the data weight
 Wd = 1./(survey.std + floor)
 
-# Make the mesh
-
+# Load the mesh
 mesh, modDict = simpeg.Mesh.TensorMesh.readVTK('nsmesh_CoarseHKPK1_NoExtension.vtr')
 sigma = modDict['S/m']
 
 # Make the mapping
 active = sigma > 9.999e-7
-actMap = simpeg.Maps.InjectActiveCells(mesh, active, np.log(1e-8), nC=mesh.nC)  
+actMap = simpeg.Maps.InjectActiveCells(mesh, active, np.log(1e-8), nC=mesh.nC)
 mappingExpAct = simpeg.Maps.ExpMap(mesh) * actMap
 
-# sigma1d = 1e-8 * mesh.vectorCCz
-# sigma1d[mesh.vectorCCz < 750] = 1e-2
+# Make background model
 sigmaBG = np.ones_like(sigma)*1e-8
 sigmaBG[active] = 1e-4
 sigma1d = mesh.r(sigmaBG,'CC','CC','M')[0,0,:]
-
-# Make teh starting model
+# Make the initial model
 m_0 = np.log(sigmaBG[active])
+
 ## Setup the problem object
 problem = NSEM.Problem3D_ePrimSec(mesh,mapping=mappingExpAct,sigmaPrimary = sigma1d)
 problem.verbose = True
@@ -103,29 +97,20 @@ problem.pair(survey)
 C =  simpeg.Utils.Counter()
 
 # Set the optimization
-# opt = simpeg.Optimization.ProjectedGNCG(maxIter = 50)
-# opt.lower = np.log(1e-5) # Set bounds to
-# opt.upper = np.log(10)
 opt = simpeg.Optimization.InexactGaussNewton(maxIter = 36)
 opt.counter = C
 opt.LSshorten = 0.5
 opt.remember('xc')
-# Need to add to the number of iter per beta.
 # Data misfit
 dmis = simpeg.DataMisfit.l2_DataMisfit(survey)
 dmis.Wd = Wd
 # Regularization
-# regMap = simpeg.Maps.InjectActiveCellsTopo(mesh,active) # valInactive=
 reg = simpeg.Regularization.Tikhonov(mesh,indActive=active)
 reg.mref = m_0
 reg.alpha_s = 1e-6
 reg.alpha_x = 1.
 reg.alpha_y = 1.
 reg.alpha_z = 1.
-reg.alpha_xx = 0.
-reg.alpha_yy = 0.
-reg.alpha_zz = 0.
-#reg.smoothModel = False # Use reference in the smoothness regularization
 # Inversion problem
 invProb = simpeg.InvProblem.BaseInvProblem(dmis, reg, opt)
 invProb.counter = C
@@ -136,7 +121,6 @@ beta.coolingFactor = 8.
 betaest = simpeg.Directives.BetaEstimate_ByEig(beta0_ratio=100.)
 targmis = simpeg.Directives.TargetMisfit()
 targmis.target = 0.5 * survey.nD
-# saveModel = simpeg.Directives.SaveModelEveryIteration()
 saveDict = simpeg.Directives.SaveOutputDictEveryIteration()
 # Create an inversion object
 inv = simpeg.Inversion.BaseInversion(invProb, directiveList=[beta,betaest,targmis,saveDict])
