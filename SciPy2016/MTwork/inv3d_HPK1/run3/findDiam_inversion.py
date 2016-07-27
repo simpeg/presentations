@@ -116,13 +116,14 @@ invProb.counter = C
 beta = simpeg.Directives.BetaSchedule()
 beta.coolingRate = 3 # Number of beta iterations
 beta.coolingFactor = 8.
-betaest = simpeg.Directives.BetaEstimate_ByEig(beta0_ratio=1.)
+# betaest = simpeg.Directives.BetaEstimate_ByEig(beta0_ratio=1.)
+invProb.beta = 1.
 targmis = simpeg.Directives.TargetMisfit()
 targmis.target = 0.5 * survey.nD
 # saveModel = simpeg.Directives.SaveModelEveryIteration()
 saveDict = simpeg.Directives.SaveOutputDictEveryIteration()
 # Create an inversion object
-inv = simpeg.Inversion.BaseInversion(invProb, directiveList=[beta,betaest,targmis,saveDict])
+inv = simpeg.Inversion.BaseInversion(invProb, directiveList=[beta,targmis,saveDict])
 
 # Print
 print 'Target Misfit is: {:.1f}'.format(targmis.target)

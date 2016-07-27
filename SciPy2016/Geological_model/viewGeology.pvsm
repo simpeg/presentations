@@ -27206,11 +27206,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="5925" servers="1">
       <Property name="FileName" id="5925.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/CDED_Lake_Coarse.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/CDED_Lake_Coarse.vtp"/>
         <Domain name="files" id="5925.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="5925.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/CDED_Lake_Coarse.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/CDED_Lake_Coarse.vtp"/>
       </Property>
       <Property name="TimestepValues" id="5925.TimestepValues"/>
       <Property name="CellArrayInfo" id="5925.CellArrayInfo"/>
@@ -27634,11 +27634,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="5094" servers="1">
       <Property name="FileName" id="5094.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/HK1.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/HK1.vtp"/>
         <Domain name="files" id="5094.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="5094.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/HK1.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/HK1.vtp"/>
       </Property>
       <Property name="TimestepValues" id="5094.TimestepValues"/>
       <Property name="CellArrayInfo" id="5094.CellArrayInfo"/>
@@ -27659,11 +27659,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="5196" servers="1">
       <Property name="FileName" id="5196.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/PK1.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/PK1.vtp"/>
         <Domain name="files" id="5196.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="5196.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/PK1.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/PK1.vtp"/>
       </Property>
       <Property name="TimestepValues" id="5196.TimestepValues"/>
       <Property name="CellArrayInfo" id="5196.CellArrayInfo"/>
@@ -27677,11 +27677,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="5220" servers="1">
       <Property name="FileName" id="5220.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/PK2.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/PK2.vtp"/>
         <Domain name="files" id="5220.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="5220.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/PK2.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/PK2.vtp"/>
       </Property>
       <Property name="TimestepValues" id="5220.TimestepValues"/>
       <Property name="CellArrayInfo" id="5220.CellArrayInfo"/>
@@ -27695,11 +27695,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="5244" servers="1">
       <Property name="FileName" id="5244.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/PK3.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/PK3.vtp"/>
         <Domain name="files" id="5244.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="5244.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/PK3.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/PK3.vtp"/>
       </Property>
       <Property name="TimestepValues" id="5244.TimestepValues"/>
       <Property name="CellArrayInfo" id="5244.CellArrayInfo"/>
@@ -27815,11 +27815,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="5268" servers="1">
       <Property name="FileName" id="5268.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/Till.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/Till.vtp"/>
         <Domain name="files" id="5268.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="5268.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/Till.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/Till.vtp"/>
       </Property>
       <Property name="TimestepValues" id="5268.TimestepValues"/>
       <Property name="CellArrayInfo" id="5268.CellArrayInfo"/>
@@ -27833,11 +27833,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="5292" servers="1">
       <Property name="FileName" id="5292.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/VK.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/VK.vtp"/>
         <Domain name="files" id="5292.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="5292.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/VK.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/VK.vtp"/>
       </Property>
       <Property name="TimestepValues" id="5292.TimestepValues"/>
       <Property name="CellArrayInfo" id="5292.CellArrayInfo"/>
@@ -27851,11 +27851,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="5316" servers="1">
       <Property name="FileName" id="5316.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/XVK.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/XVK.vtp"/>
         <Domain name="files" id="5316.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="5316.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/XVK.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/XVK.vtp"/>
       </Property>
       <Property name="TimestepValues" id="5316.TimestepValues"/>
       <Property name="CellArrayInfo" id="5316.CellArrayInfo"/>
@@ -27869,11 +27869,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="9580" servers="1">
       <Property name="FileName" id="9580.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/activeModTopo.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/activeModTopo.vtp"/>
         <Domain name="files" id="9580.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="9580.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/activeModTopo.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/activeModTopo.vtp"/>
       </Property>
       <Property name="TimestepValues" id="9580.TimestepValues"/>
       <Property name="CellArrayInfo" id="9580.CellArrayInfo" number_of_elements="4">
@@ -27906,11 +27906,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLUnstructuredGridReader" id="8460" servers="1">
       <Property name="FileName" id="8460.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/activeModel.vtu"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/activeModel.vtu"/>
         <Domain name="files" id="8460.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="8460.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/activeModel.vtu"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/activeModel.vtu"/>
       </Property>
       <Property name="TimestepValues" id="8460.TimestepValues"/>
       <Property name="CellArrayInfo" id="8460.CellArrayInfo" number_of_elements="2">
@@ -27931,11 +27931,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLRectilinearGridReader" id="7675" servers="1">
       <Property name="FileName" id="7675.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/meshDC.vtr"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/meshDC.vtr"/>
         <Domain name="files" id="7675.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="7675.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/meshDC.vtr"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/meshDC.vtr"/>
       </Property>
       <Property name="TimestepValues" id="7675.TimestepValues"/>
       <Property name="CellArrayInfo" id="7675.CellArrayInfo" number_of_elements="2">
@@ -27956,11 +27956,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLRectilinearGridReader" id="7187" servers="1">
       <Property name="FileName" id="7187.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/nsmesh.vtr"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/nsmesh.vtr"/>
         <Domain name="files" id="7187.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="7187.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/nsmesh.vtr"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/nsmesh.vtr"/>
       </Property>
       <Property name="TimestepValues" id="7187.TimestepValues"/>
       <Property name="CellArrayInfo" id="7187.CellArrayInfo"/>
@@ -27974,11 +27974,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLRectilinearGridReader" id="10895" servers="1">
       <Property name="FileName" id="10895.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/nsmesh_0.vtr"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/nsmesh_0.vtr"/>
         <Domain name="files" id="10895.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="10895.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/nsmesh_0.vtr"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/nsmesh_0.vtr"/>
       </Property>
       <Property name="TimestepValues" id="10895.TimestepValues"/>
       <Property name="CellArrayInfo" id="10895.CellArrayInfo" number_of_elements="2">
@@ -27999,11 +27999,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLRectilinearGridReader" id="6302" servers="1">
       <Property name="FileName" id="6302.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/testMesh.vtr"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/testMesh.vtr"/>
         <Domain name="files" id="6302.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="6302.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/Geological_model/testMesh.vtr"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/Geological_model/testMesh.vtr"/>
       </Property>
       <Property name="TimestepValues" id="6302.TimestepValues"/>
       <Property name="CellArrayInfo" id="6302.CellArrayInfo" number_of_elements="2">
@@ -28024,11 +28024,11 @@
     </Proxy>
     <Proxy group="sources" type="XMLPolyDataReader" id="9286" servers="1">
       <Property name="FileName" id="9286.FileName" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/topoPolyBox.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/topoPolyBox.vtp"/>
         <Domain name="files" id="9286.FileName.files"/>
       </Property>
       <Property name="FileNameInfo" id="9286.FileNameInfo" number_of_elements="1">
-        <Element index="0" value="/home/gudni/Dropbox/Work/UBCwork/simpeg/presentations/SciPy2016/MTwork/topoPolyBox.vtp"/>
+        <Element index="0" value="/home/gudni/Dropbox/Work/SimPEG/presentations/SciPy2016/MTwork/topoPolyBox.vtp"/>
       </Property>
       <Property name="TimestepValues" id="9286.TimestepValues"/>
       <Property name="CellArrayInfo" id="9286.CellArrayInfo"/>
