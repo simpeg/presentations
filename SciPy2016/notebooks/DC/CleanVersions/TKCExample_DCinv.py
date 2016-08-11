@@ -113,8 +113,7 @@ survey.dobs = dobs
 # Define datamisfit portion of objective function
 dmisfit = DataMisfit.l2_DataMisfit(survey)
 # Define regulatization (model objective function)
-reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind)
-reg.wght = depth[~airind]
+reg = Regularization.Simple(mesh, mapping=regmap, indActive=~airind, cell_weights=depth[~airind])
 opt = Optimization.InexactGaussNewton(maxIter = 20)
 invProb = InvProblem.BaseInvProblem(dmisfit, reg, opt)
 # Define inversion parameters
